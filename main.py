@@ -65,7 +65,11 @@ if not api_key or api_key == "your_actual_api_key_here":
     logger.error("GROQ_API_KEY is not set or is using the placeholder value. Please set your actual API key in the .env file.")
     raise ValueError("GROQ_API_KEY is not properly configured")
 
-groq_client = Groq(api_key=api_key)
+try:
+    groq_client = Groq(api_key=api_key)
+except Exception as e:
+    logger.error(f"Failed to initialize Groq client: {e}")
+    raise RuntimeError(f"Groq client initialization failed: {e}")
 
 # Simple in-memory cache for schematics
 schematic_cache = {}
